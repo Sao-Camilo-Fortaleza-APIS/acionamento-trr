@@ -1,15 +1,43 @@
+networks:
+  gestaoavista_net:
+    external: true  # Usa uma rede Docker já existente
+
+volumes:
+  acionamento-trr-data:
+    driver: local  # Define um volume persistente
+
 services:
-  ocupacao-setores:
-    image: sihhsc/gestaoavista:v2
-    container_name: ocupacao-setores
+  acionamento-trr:
+    image: acionamento-trr:v1
+    container_name: acionamento-trr
+    build:
+      context: .
     restart: always
     ports:
-      - '6003:6003'
+      - '6007:6007'
     env_file:
       - .env
     healthcheck:
-      test: [ "CMD-SHELL", "curl --silent --fail localhost:6003/flask-health-check || exit 1" ]
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:6007/flask-health-check || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 3
-    command: gunicorn -w 3 -t 60 -b 0.0.0.0:6003 app:server
+    command: >
+      uwsgi --http 0.0.0.0:6007 
+            --module app:server 
+            --master 
+            --processes 4 
+            --threads 2 
+            --max-requests 1000 
+            --harakiri 60
+    deploy:
+      resources:
+        limits:
+          memory: 512M  # Limite máximo de memória
+          cpus: "0.5"   # Limite de CPU (meio núcleo)
+        reservations:
+          memory: 256M  # Reserva mínima de memória
+    volumes:
+      - acionamento-trr-data:/app/data
+    networks:
+      - gestaoavista_net  # Conectando à rede já existente
