@@ -1,8 +1,9 @@
 .cabecalho {
     width: 100%;
+    height: 70px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     padding: 0 1.25rem;
     border-bottom: 0.125rem solid #AAAAAA;
     box-shadow: 0 0 0.188rem #AAAAAA, 0 0 0.125rem #AAAAAA;
@@ -10,7 +11,7 @@
   }
 
 .logo {
-    width: 15%;
+    width: 11.75rem;
     display: block;
     margin: 0.313rem 0;
     margin-left: 0.313rem;
@@ -21,12 +22,13 @@
     font-size: 3.125rem;
     color: white;
     display: flex;
+    margin: 0 auto;
   }
   
 .subtitulo {
     font-family: 'Trebuchet MS';
     color: white;
-    width: 15%;
+    width: 11.75rem;
     text-align: end;
   }
 
@@ -43,7 +45,7 @@
     }
     
     .titulo {
-        font-size: 1rem;
+        font-size: 1.375rem;
     }
     .cabecalho{
         width: 100%;
